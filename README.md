@@ -10,6 +10,34 @@
 
 # Задание 2
 
+- Создание резервной копии:
+```
+pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f "/backup/db_backup.dump" my_database
+-F c — кастомный сжатый формат.
 
+-b — включать большие объекты (blobs).
+
+-v — подробный вывод (verbose).
+
+-f — путь к целевому файлу.
+```
+
+- Восстановление базы данных:
+
+```
+pg_restore -U postgres -h localhost -p 5432 -d my_database -v "/backup/db_backup.dump"
+-d — целевая база данных для восстановления.
+
+Если требуется предварительно очистить существующие объекты перед накатом, добавляется флаг -c (--clean).
+```
 
 # Задание 3
+
+Создание инкрементного бэкапа относительно предыдущего полного бэкапа:
+```
+mysqlbackup --user=root --password=secret \
+  --backup-dir=/backup/inc1 \
+  --incremental \
+  --incremental-base=dir:/backup/full \
+  backup-to-image
+```
